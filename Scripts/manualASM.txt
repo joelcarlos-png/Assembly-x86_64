@@ -1,0 +1,69 @@
+# Conteúdo do manual focado no que o usuário aprendeu e no que é essencial
+manual_content = """Manual de Assembly x86_64 para Iniciantes (v1.0)
+==================================================
+
+1. A HIERARQUIA DOS REGISTRADORES (As Bonecas Russas)
+--------------------------------------------------
+Cada registrador de 64 bits pode ser acessado em pedaços menores:
+
+[ RAX ] (64 bits) - O registrador inteiro
+   [ EAX ] (32 bits) - Metade inferior
+      [ AX ] (16 bits) - Parte de 16 bits
+         [ AH ] [ AL ] (8 bits cada)
+          (High) (Low) <-- O AL é o que usamos para letras individuais.
+
+Principais Registradores:
+- RAX: Acumulador (usado para retornos de funções e syscalls).
+- RBX: Base (bom para endereços de memória).
+- RCX: Contador (usado em loops).
+- RDX: Dados (usado em divisões, restos e syscalls).
+- RSI: Source Index (Ponteiro de origem para strings/scans).
+- RDI: Destination Index (Ponteiro de destino para prints/scans).
+- R8 até R15: Registradores extras para uso geral (r8b, r9b são as versões de 1 byte).
+
+2. OS JUMPS (Saltos Condicionais)
+--------------------------------------------------
+Sempre precedidos por um 'CMP' (comparação).
+
+Lógica: CMP A, B
+
+| Comando | Significado                | Condição Matemática (A para B) |
+|---------|----------------------------|--------------------------------|
+| JE      | Jump if Equal              | A == B                         |
+| JNE     | Jump if Not Equal          | A != B                         |
+| JG      | Jump if Greater            | A > B                          |
+| JGE     | Jump if Greater or Equal   | A >= B                         |
+| JL      | Jump if Less               | A < B                          |
+| JLE     | Jump if Less or Equal      | A <= B                         |
+| JZ      | Jump if Zero               | Resultado da conta deu zero    |
+| JNZ     | Jump if Not Zero           | Resultado não é zero           |
+| JMP     | Jump (Incondicional)       | Pula sempre (sem comparar nada)|
+
+3. TABELA ASCII ESSENCIAL
+--------------------------------------------------
+- '0' até '9' : 48 até 57 (Para converter: Número = ASCII - 48).
+- 'A' até 'Z' : 65 até 90.
+- 'a' até 'z' : 97 até 122.
+- 'Enter'     : 10 (ou 0xA em hexadecimal).
+- '-' (Hífen) : 45.
+
+4. MATEMÁTICA E MEMÓRIA
+--------------------------------------------------
+- MOV dest, src    : Move o valor de src para dest.
+- ADD dest, val    : Soma val em dest (dest = dest + val).
+- SUB dest, val    : Subtrai val de dest (dest = dest - val).
+- INC dest         : Incrementa 1 (dest++).
+- DEC dest         : Decrementa 1 (dest--).
+- XOR RAX, RAX     : Jeito rápido de zerar o RAX.
+- [buffer + rcx]   : Acessa a memória no endereço 'buffer' pulando 'rcx' bytes.
+
+5. SYSCALLS LÍNGUA PORTUGUESA (Linux x64)
+--------------------------------------------------
+READ (Scan):  rax=0, rdi=0 (teclado), rsi=buffer, rdx=tamanho.
+WRITE (Print): rax=1, rdi=1 (tela),    rsi=buffer, rdx=tamanho.
+EXIT:          rax=60, rdi=0 (sucesso).
+
+==================================================
+DICA DE OURO: No 'DIV RBX', o RAX recebe o resultado e o RDX recebe o resto. 
+Sempre limpe o RDX (xor rdx, rdx) antes de dividir!
+==================================================
